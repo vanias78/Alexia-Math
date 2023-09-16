@@ -32,7 +32,7 @@
         <h1>ΜΑΘΗΜΑΤΙΚΑ ΑΛΕΞΙΑΣ</h1>
         <hr>
 
-        <h3 id="math_type" style="border: 1px;">Πρόσθεση</h3>
+        <h3 id="math_type" style="color: red;">&nbsp;</h3>
 
 
         <hr>
@@ -40,6 +40,7 @@
         <div style="font-size:xx-large">
             <span id="num1">&nbsp;</span> <span id="operator">&nbsp;</span> <span id="num2">&nbsp;</span> = <span
                 id="result" contenteditable="true">&nbsp;</span>
+            <hr>
             <h3 id="wordresult" style="color:blue;">&nbsp;</h3>
 
         </div>
@@ -47,7 +48,7 @@
         <!-- table Skor -->
 
         <div style="text-align: center;">
-            <table border=" 1"
+            <table border="1"
                 style="margin-left: auto; margin-right: auto; text-align: center; width: 80%; border-collapse: collapse; table-layout: fixed;">
                 <tr>
                     <td colspan="2" style="border: 1px solid black;background-color:rgb(117, 226, 230);">ΑΠΑΝΤΗΣΕΙΣ</td>
@@ -100,7 +101,7 @@
 
             #numpad {
 
-                width: 70%;
+                width: 80%;
                 border-collapse: collapse;
                 align-items: center;
                 justify-content: center;
@@ -224,7 +225,7 @@
 
             setTimeout(function () {
                 element.innerHTML = "&nbsp;";
-            }, 3000); // 5000 milliseconds = 5 seconds
+            }, 5000); // 5000 milliseconds = 5 seconds
 
             return;
         }
@@ -271,7 +272,7 @@
             intervalId = setInterval(function () {
                 random();
                 clearInterval(intervalId); // clear the interval once done
-            }, 3000);
+            }, 2000);
         }
     }
 
@@ -286,9 +287,11 @@
 
 
         if (randomNumber == 0) {
-            praxis = "+"
+            praxis = "+";
+            document.getElementById("math_type").innerHTML = "Πρόσθεση";
         } else {
-            praxis = "-"
+            praxis = "-";
+            document.getElementById("math_type").innerHTML = "Αφαίρεση";
         }
         document.getElementById("operator").innerHTML = praxis;
 
