@@ -25,6 +25,54 @@
         }
     </style>
 
+    <style>
+        /* Style the math-container */
+        .math-container {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Style the table */
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 150px;
+        }
+
+        /* Style the table cells */
+        td {
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            border-left: none;
+            border-right: none;
+            text-align: center;
+            padding: 8px;
+        }
+
+        /* Remove bottom border from the first row */
+        tr:first-child td {
+            border-bottom: none;
+        }
+
+        /* Remove top border from the second row */
+        tr:nth-child(2) td {
+            border-top: none;
+        }
+
+        /* Style the input fields */
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+
+        }
+    </style>
+
+
+
+
+
+
 
 
     <div class="container text-center">
@@ -35,24 +83,53 @@
         <h3 id="math_type" style="color: red;">&nbsp;</h3>
 
 
-        <hr>
 
-        <div style="font-size:xx-large">
-            <span id="num1">&nbsp;</span> <span id="operator">&nbsp;</span> <span id="num2">&nbsp;</span> = <span
-                id="result" contenteditable="true">&nbsp;</span>
-            <hr>
-            <h3 id="wordresult" style="color:blue;">&nbsp;</h3>
+        <div class="math-container" style="padding-right: 20px;">
+            <!-- Span element -->
+            <span id="operator" style="font-size: 60px;padding-bottom: 20px;">+</span>
+
+
+
+            <div style="font-size:xx-large">
+
+                <table>
+                    <!-- First row -->
+                    <tr>
+                        <td id="num1"></td>
+                        <td id="num2"></td>
+                    </tr>
+
+                    <!-- Second row -->
+                    <tr>
+                        <td id="num3"></td>
+                        <td id="num4"></td>
+                    </tr>
+
+                    <!-- Third row -->
+                    <tr>
+                        <td id="res2"><input type="text" maxlength="1"></td>
+                        <td id="res1"><input type="text" maxlength="1"></td>
+                    </tr>
+                </table>
+
+            </div>
+
+
 
         </div>
         <hr>
+
+
+        <h3 id="wordresult" style="color:blue;">&nbsp;</h3>
+
+
+
         <!-- table Skor -->
 
         <div style="text-align: center;">
             <table border="1"
                 style="margin-left: auto; margin-right: auto; text-align: center; width: 80%; border-collapse: collapse; table-layout: fixed;">
-                <tr>
-                    <td colspan="2" style="border: 1px solid black;background-color:rgb(117, 226, 230);">ΑΠΑΝΤΗΣΕΙΣ</td>
-                </tr>
+
                 <tr>
                     <td style=" width: 50%;">Σωστά</td>
                     <td style=" width: 50%;">Λάθος</td>
@@ -66,10 +143,7 @@
 
 
 
-
-        <hr>
-
-        <table id="numpad">
+        <table id="numpad" class="mt-2">
             <tr>
                 <td><button class="btn btn-secondary" onclick="appendNumber(1)">1</button></td>
                 <td><button class="btn btn-secondary" onclick="appendNumber(2)">2</button></td>
@@ -96,6 +170,18 @@
             table {
                 margin: 0 auto;
                 /* this will center the table horizontally */
+                border-top: none;
+                border-left: none;
+                border-bottom: none;
+                border-right: none;
+
+            }
+
+            td.btn {
+                border-top: none;
+                border-left: none;
+                border-bottom: none;
+                border-right: none;
             }
 
 
@@ -130,18 +216,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-        <hr>
         <p id="newgamemsg">&nbsp;</p>
         <button class="btn btn-dark mt-1" id="newgame" onclick="resetgame()">NEO ΠΑΙΧΝΙΔΙ</button>
 
@@ -172,6 +246,8 @@
         document.getElementById("wordresult").innerHTML = "&nbsp;";
         document.getElementById("right_answer").innerHTML = 0;
         document.getElementById("wrong_answer").innerHTML = 0;
+        clearResult();
+
     }
 
 
@@ -198,21 +274,27 @@
 
 
     function appendNumber(num) {
-
         if ((gamefinished == false) || (!intervalId)) {
             document.getElementById("wordresult").innerHTML = "&nbsp;";
-            let resultElement = document.getElementById('result');
-            if (resultElement.textContent.length <= 3) {
-                resultElement.textContent += num;
-            }
 
+            let res1Input = document.getElementById("res1").querySelector("input");
+            let res2Input = document.getElementById("res2").querySelector("input");
+
+            if (res1Input.value === "") {
+                res1Input.value = num;
+            } else if (res2Input.value === "") {
+                res2Input.value = num;
+            } else {
+                // Do nothing if both res1 and res2 are filled
+            }
         }
     }
 
+
     function clearResult() {
-        document.getElementById("wordresult").innerHTML = "&nbsp;";
-        let resultElement = document.getElementById('result');
-        resultElement.textContent = '';
+        document.getElementById("res1").querySelector("input").value = "";
+        document.getElementById("res2").querySelector("input").value = "";
+
     }
 
     function calculate() {
@@ -234,10 +316,23 @@
 
         noumero1 = parseInt(document.getElementById("num1").textContent);
         noumero2 = parseInt(document.getElementById("num2").textContent);
+        noumero3 = parseInt(document.getElementById("num3").textContent);
+        noumero4 = parseInt(document.getElementById("num4").textContent);
+
+
         praxi = document.getElementById("operator").innerText;
 
-        let content = document.getElementById("result").textContent.trim();
-        let alexiaresult = content && content !== '\u00A0' ? parseInt(content) : 0;
+        let apot1 = parseInt(document.getElementById("res2").querySelector("input").value) || 0;
+
+        let apot2 = parseInt(document.getElementById("res1").querySelector("input").value);
+
+
+
+
+
+
+
+
 
 
 
@@ -245,21 +340,31 @@
 
         if (gamefinished == false) {
             if (praxi == "+") {
-                pcresult = noumero1 + noumero2;
-                console.log(noumero1, "+", noumero2, "=", pcresult);
+                pcresult1 = noumero1 + noumero3;
+                pcresult2 = noumero2 + noumero4;
+
             } else if (praxi == "-") {
-                pcresult = noumero1 - noumero2;
-                console.log(noumero1, "-", noumero2, "=", pcresult);
+                pcresult1 = noumero1 - noumero3;
+                pcresult2 = noumero2 - noumero4;
+
             }
 
 
-            if (alexiaresult == pcresult) {
+
+            if ((apot1 == pcresult1) && (apot2 == pcresult2)) {
                 document.getElementById("wordresult").innerHTML = "ΣΩΣΤΑ !!!";
                 skor_sosto = skor_sosto + 1;
             } else {
-                document.getElementById("wordresult").innerHTML = "ΛΑΘΟΣ !!! (" + pcresult + ")";
+                document.getElementById("wordresult").innerHTML = "ΛΑΘΟΣ !!! (" + pcresult1 + pcresult2 + ")";
                 skor_lathos = skor_lathos + 1;
             }
+
+
+
+
+
+
+
             document.getElementById("right_answer").innerHTML = skor_sosto;
             document.getElementById("wrong_answer").innerHTML = skor_lathos;
             setButtonState(false);
@@ -276,36 +381,56 @@
         }
     }
 
-
-
     function random() {
-        var randomNumber = Math.round(Math.random());
-        var praxis = "+";
+        var praxis = Math.round(Math.random()) == 0 ? "+" : "-";
 
-
-
-
-
-        if (randomNumber == 0) {
-            praxis = "+";
-            document.getElementById("math_type").innerHTML = "Πρόσθεση";
-        } else {
-            praxis = "-";
-            document.getElementById("math_type").innerHTML = "Αφαίρεση";
-        }
+        // Update the math_type and operator displays
+        document.getElementById("math_type").innerHTML = praxis == "+" ? "Πρόσθεση" : "Αφαίρεση";
         document.getElementById("operator").innerHTML = praxis;
 
+        let num1, num2, num3, num4;
 
-        var num1 = Math.floor(Math.random() * 91); // This will give a random number between 0 and 90
-        var num2 = Math.floor(Math.random() * (Math.min(num1, 10) + 1)); // This will give a random number between 0 and the smaller of num1 or 10
+        // Generate random numbers
+        num1 = Math.floor(Math.random() * 10);
+        num2 = Math.floor(Math.random() * 10);
 
-        document.getElementById("num1").textContent = num1;
-        document.getElementById("num2").textContent = num2;
-        document.getElementById("result").innerHTML = "&nbsp;";
+        if (praxis === '+') {
+            // Ensure num1 + num3 < 10
+            do {
+                num3 = Math.floor(Math.random() * (num1 + 1));
+            } while (num1 + num3 >= 10);
+
+            // Ensure num2 + num4 < 10
+            do {
+                num4 = Math.floor(Math.random() * (num2 + 1));
+            } while (num2 + num4 >= 10);
+        } else {
+            // Generate a random number less than or equal to num1 for num3
+            num3 = Math.floor(Math.random() * (num1 + 1));
+            // Generate a random number less than or equal to num2 for num4
+            num4 = Math.floor(Math.random() * (num2 + 1));
+        }
+
+        // Update the HTML elements with the generated numbers
+        document.getElementById("num1").innerHTML = num1;
+        document.getElementById("num2").innerHTML = num2;
+        document.getElementById("num3").innerHTML = num3;
+        document.getElementById("num4").innerHTML = num4;
+
+        // Clear the input fields
+        document.getElementById("res1").querySelector("input").value = "";
+        document.getElementById("res2").querySelector("input").value = "";
+
+        // Clear the wordresult display
         document.getElementById("wordresult").innerHTML = "&nbsp;";
-        setButtonState(true);
 
+        // Enable buttons
+        setButtonState(true);
     }
+
+
+
+
 
 </script>
 
